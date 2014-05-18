@@ -21,7 +21,7 @@ public class NoteServiceImpl implements NoteService {
 	}
 
 	public List<Note> getUserNotes(User user) throws DaoException {
-		return noteDao.list(Restrictions.eq(Note.USER_COLUMN, user));
+		return noteDao.list(Restrictions.eq(Note.USER_COLUMN, user.getId()));
 	}
 
 }

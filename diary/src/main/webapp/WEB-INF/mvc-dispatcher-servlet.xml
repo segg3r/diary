@@ -16,6 +16,7 @@
     <context:component-scan base-package="by.paveldzunovich.diary.web.controllers" />
     <context:component-scan base-package="by.paveldzunovich.diary.web.filters" />
     <context:component-scan base-package="by.paveldzunovich.diary.web.listeners" />
+	<context:component-scan base-package="by.paveldzunovich.diary.web.controllers.binders" />
     
     <bean id="viewResolver"
     	class="org.springframework.web.servlet.view.InternalResourceViewResolver" >
@@ -29,6 +30,7 @@
     
     <mvc:resources mapping="/css/**" location="WEB-INF/static/css/" />
     
+    <!-- DAOs and services -->
     <bean id="userDao" class="by.paveldzunovich.diary.dao.impl.ItemDaoImpl">
         <constructor-arg>
 			<value>by.paveldzunovich.diary.model.User</value>
@@ -49,4 +51,11 @@
 		</constructor-arg>
     </bean>
     <bean id="noteService" class="by.paveldzunovich.diary.services.impl.NoteServiceImpl" />
+    
+    <!-- Controllers -->
+    <bean id="mainPage" class="by.paveldzunovich.diary.web.controllers.MainPage" />
+    
+    <!-- Binders -->
+    <bean id="priorityBinder" class="by.paveldzunovich.diary.web.controllers.binders.PriorityBinder" />
+    <bean id="userBinder" class="by.paveldzunovich.diary.web.controllers.binders.UserBinder" />
 </beans>

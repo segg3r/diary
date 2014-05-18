@@ -20,6 +20,12 @@ public class Priority extends Item {
 		super();
 	}
 
+	public Priority(String name, String color) {
+		super();
+		this.name = name;
+		this.color = color;
+	}
+
 	public String getName() {
 		return name;
 	}

@@ -26,21 +26,28 @@ import by.paveldzunovich.diary.web.controllers.binders.UserBinder;
 public class Notes {
 
 	@Autowired
+	private UserBinder userBinder;
+
+	@Autowired
+	private PriorityBinder priorityBinder;
+
+	@Autowired
+	private MainPage mainPage;
+	
+	@Autowired
 	private NoteService noteService;
 
 	@InitBinder
 	protected void initBinder(HttpServletRequest request,
 			ServletRequestDataBinder binder) {
-		binder.registerCustomEditor(User.class, new UserBinder());
-		binder.registerCustomEditor(Priority.class, new PriorityBinder());
+		binder.registerCustomEditor(User.class, userBinder);
+		binder.registerCustomEditor(Priority.class, priorityBinder);
 	}
 
-	@RequestMapping(value = "/add", method = RequestMethod.PUT)
+	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	public ModelAndView addNote(HttpServletRequest request,
 			@ModelAttribute("note") @Valid Note note,
 			BindingResult bindingResult) {
-		ModelAndView view = new MainPage().get(request);
-
 		if (!bindingResult.hasErrors()) {
 			try {
 				noteService.add(note);
@@ -48,6 +55,8 @@ public class Notes {
 				bindingResult.rejectValue("id", "id.fail", "Cannot add note.");
 			}
 		}
+
+		ModelAndView view = mainPage.get(request);
 		view.addAllObjects(bindingResult.getModel());
 		return view;
 	}

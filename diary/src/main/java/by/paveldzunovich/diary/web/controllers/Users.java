@@ -25,6 +25,9 @@ import by.paveldzunovich.diary.web.controllers.viewbeans.Credentials;
 public class Users {
 
 	@Autowired
+	private MainPage mainPage;
+	
+	@Autowired
 	private UserService userService;
 
 	@RequestMapping(value = "/register")
@@ -43,11 +46,11 @@ public class Users {
 			HttpSession session = request.getSession(true);
 			session.setAttribute(Attributes.APPLICATION_USER, user);
 
-			return new MainPage().get(request);
+			return mainPage.get(request);
 		} catch (DaoException e) {
 			bindingResult.rejectValue("email", "email.wrong", e.getMessage());
 
-			ModelAndView view = new MainPage().get(request);
+			ModelAndView view = mainPage.get(request);
 			view.addAllObjects(bindingResult.getModel());
 
 			return view;
@@ -66,11 +69,11 @@ public class Users {
 			HttpSession session = request.getSession(true);
 			session.setAttribute(Attributes.APPLICATION_USER, user);
 
-			return new MainPage().get(request);
+			return mainPage.get(request);
 		} catch (DaoException e) {
 			bindingResult.rejectValue("email", "email.wrong", e.getMessage());
 
-			ModelAndView view = new MainPage().get(request);
+			ModelAndView view = mainPage.get(request);
 			view.addAllObjects(bindingResult.getModel());
 
 			return view;
