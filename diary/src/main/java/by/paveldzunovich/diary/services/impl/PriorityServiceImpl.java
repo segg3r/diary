@@ -1,5 +1,6 @@
 package by.paveldzunovich.diary.services.impl;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.hibernate.criterion.Restrictions;
@@ -9,12 +10,16 @@ import by.paveldzunovich.diary.dao.exceptions.DaoException;
 import by.paveldzunovich.diary.dao.ifaces.ItemDao;
 import by.paveldzunovich.diary.model.Item;
 import by.paveldzunovich.diary.model.Priority;
+import by.paveldzunovich.diary.model.comparators.PriorityComparator;
 import by.paveldzunovich.diary.services.ifaces.PriorityService;
 
 public class PriorityServiceImpl implements PriorityService {
 
 	@Autowired
 	private ItemDao<Priority> priorityDao;
+
+	@Autowired
+	private PriorityComparator priorityComparator;
 
 	public void initializeList(List<Priority> priorities) throws DaoException {
 		List<Priority> existing = priorityDao.list();
@@ -30,7 +35,9 @@ public class PriorityServiceImpl implements PriorityService {
 	}
 
 	public List<Priority> list() throws DaoException {
-		return priorityDao.list();
+		List<Priority> list = priorityDao.list();
+		Collections.sort(list, priorityComparator);
+		return list;
 	}
 
 }

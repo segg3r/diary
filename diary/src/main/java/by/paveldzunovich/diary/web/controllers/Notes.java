@@ -1,5 +1,7 @@
 package by.paveldzunovich.diary.web.controllers;
 
+import java.util.Date;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -16,9 +18,11 @@ import org.springframework.web.servlet.ModelAndView;
 import by.paveldzunovich.diary.dao.exceptions.DaoException;
 import by.paveldzunovich.diary.model.Note;
 import by.paveldzunovich.diary.model.Priority;
+import by.paveldzunovich.diary.model.Theme;
 import by.paveldzunovich.diary.model.User;
 import by.paveldzunovich.diary.services.ifaces.NoteService;
 import by.paveldzunovich.diary.web.controllers.binders.PriorityBinder;
+import by.paveldzunovich.diary.web.controllers.binders.ThemeBinder;
 import by.paveldzunovich.diary.web.controllers.binders.UserBinder;
 
 @Controller
@@ -32,6 +36,9 @@ public class Notes {
 	private PriorityBinder priorityBinder;
 
 	@Autowired
+	private ThemeBinder themeBinder;
+
+	@Autowired
 	private MainPage mainPage;
 	
 	@Autowired
@@ -42,12 +49,14 @@ public class Notes {
 			ServletRequestDataBinder binder) {
 		binder.registerCustomEditor(User.class, userBinder);
 		binder.registerCustomEditor(Priority.class, priorityBinder);
+		binder.registerCustomEditor(Theme.class, themeBinder);
 	}
 
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	public ModelAndView addNote(HttpServletRequest request,
 			@ModelAttribute("note") @Valid Note note,
 			BindingResult bindingResult) {
+		note.setPublished(new Date());
 		if (!bindingResult.hasErrors()) {
 			try {
 				noteService.add(note);
@@ -56,8 +65,10 @@ public class Notes {
 			}
 		}
 
-		ModelAndView view = mainPage.get(request);
-		view.addAllObjects(bindingResult.getModel());
+		ModelAndView view = mainPage.get(request, note.getTheme());
+		if (bindingResult.hasErrors()) {
+			view.addAllObjects(bindingResult.getModel());
+		}
 		return view;
 	}
 

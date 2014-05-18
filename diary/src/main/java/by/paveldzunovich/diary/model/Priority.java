@@ -9,21 +9,17 @@ import javax.persistence.Table;
 public class Priority extends Item {
 
 	public static final String NAME_COLUMN = "name";
-	public static final String COLOR_COLUMN = "color";
 
 	@Column(name = NAME_COLUMN)
 	private String name;
-	@Column(name = COLOR_COLUMN)
-	private String color;
 
 	public Priority() {
 		super();
 	}
 
-	public Priority(String name, String color) {
+	public Priority(String name) {
 		super();
 		this.name = name;
-		this.color = color;
 	}
 
 	public String getName() {
@@ -32,14 +28,6 @@ public class Priority extends Item {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public String getColor() {
-		return color;
-	}
-
-	public void setColor(String color) {
-		this.color = color;
 	}
 
 }

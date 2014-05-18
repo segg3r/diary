@@ -1,5 +1,7 @@
 package by.paveldzunovich.diary.services.impl;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.hibernate.criterion.Restrictions;
@@ -8,20 +10,42 @@ import org.springframework.beans.factory.annotation.Autowired;
 import by.paveldzunovich.diary.dao.exceptions.DaoException;
 import by.paveldzunovich.diary.dao.ifaces.ItemDao;
 import by.paveldzunovich.diary.model.Note;
+import by.paveldzunovich.diary.model.Theme;
 import by.paveldzunovich.diary.model.User;
+import by.paveldzunovich.diary.model.comparators.NotesComparator;
 import by.paveldzunovich.diary.services.ifaces.NoteService;
+import by.paveldzunovich.diary.services.ifaces.ThemeService;
 
 public class NoteServiceImpl implements NoteService {
 
 	@Autowired
 	private ItemDao<Note> noteDao;
+	@Autowired
+	private ThemeService themeService;
+	@Autowired
+	private NotesComparator notesComparator;
 
 	public void add(Note note) throws DaoException {
 		noteDao.add(note);
 	}
 
-	public List<Note> getUserNotes(User user) throws DaoException {
-		return noteDao.list(Restrictions.eq(Note.USER_COLUMN, user.getId()));
+	public List<Note> getThemeNotes(Theme theme) throws DaoException {
+		List<Note> result = noteDao.list(Restrictions.eq(Note.THEME_COLUMN,
+				theme.getId()));
+		Collections.sort(result, notesComparator);
+		return result;
+	}
+
+	public List<Note> getNotes(User user) throws DaoException {
+		List<Note> result = new ArrayList<Note>();
+
+		List<Theme> userThemes = themeService.getUserThemes(user);
+		for (Theme theme : userThemes) {
+			result.addAll(getThemeNotes(theme));
+		}
+
+		Collections.sort(result, notesComparator);
+		return result;
 	}
 
 }

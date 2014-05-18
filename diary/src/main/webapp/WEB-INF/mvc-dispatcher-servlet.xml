@@ -28,7 +28,7 @@
         </property>
     </bean>
     
-    <mvc:resources mapping="/css/**" location="WEB-INF/static/css/" />
+    <mvc:resources mapping="/semantic/**" location="WEB-INF/semantic/" />
     
     <!-- DAOs and services -->
     <bean id="userDao" class="by.paveldzunovich.diary.dao.impl.ItemDaoImpl">
@@ -52,10 +52,22 @@
     </bean>
     <bean id="noteService" class="by.paveldzunovich.diary.services.impl.NoteServiceImpl" />
     
+    <bean id="themeDao" class="by.paveldzunovich.diary.dao.impl.ItemDaoImpl">
+        <constructor-arg>
+			<value>by.paveldzunovich.diary.model.Theme</value>
+		</constructor-arg>
+    </bean>
+    <bean id="themeService" class="by.paveldzunovich.diary.services.impl.ThemeServiceImpl" />
+    
     <!-- Controllers -->
     <bean id="mainPage" class="by.paveldzunovich.diary.web.controllers.MainPage" />
     
     <!-- Binders -->
     <bean id="priorityBinder" class="by.paveldzunovich.diary.web.controllers.binders.PriorityBinder" />
     <bean id="userBinder" class="by.paveldzunovich.diary.web.controllers.binders.UserBinder" />
+    <bean id="themeBinder" class="by.paveldzunovich.diary.web.controllers.binders.ThemeBinder" />
+    
+    <!-- Comparators -->
+    <bean id="priorityComparator" class="by.paveldzunovich.diary.model.comparators.PriorityComparator" />
+    <bean id="notesComparator" class="by.paveldzunovich.diary.model.comparators.NotesComparator" />
 </beans>

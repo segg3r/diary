@@ -21,8 +21,8 @@ public class DatabaseInitializeListener implements ServletContextListener {
 	private static final List<Priority> PRIORITIES;
 	static {
 		PRIORITIES = new ArrayList<Priority>();
-		PRIORITIES.add(new Priority("important", "red"));
-		PRIORITIES.add(new Priority("normal", "black"));
+		PRIORITIES.add(new Priority("important"));
+		PRIORITIES.add(new Priority("normal"));
 	}
 
 	public void contextDestroyed(ServletContextEvent ev) {

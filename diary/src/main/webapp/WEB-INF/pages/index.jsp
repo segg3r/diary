@@ -7,46 +7,109 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Main page</title>
+
+<link
+	href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Open+Sans:300italic,400,300,700'
+	rel='stylesheet' type='text/css'>
+
+<link rel="stylesheet" type="text/css"
+	href='<c:url value="/semantic/css/semantic.css" />'>
+
+<script
+	src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.js"></script>
+<script src='<c:url value="/semantic/javascript/semantic.js" />'></script>
+
 </head>
-<body>
-	Loggined as: <b><c:out value="${applicationUser.firstName }" /></b>
-	<br>
-
+<body style="margin: 0px;">
 	<c:if test="${empty applicationUser }">
-		<f:form method="POST" servletRelativeAction="/user/login"
-			modelAttribute="credentials">
-			<f:errors path="*" />
-		Email: <f:input path="email" name="email" /><br>
-		Password: <f:password path="password" name="password" /><br>
-			<input type="submit" value="Login" />
-		</f:form>
-	</c:if>
+		<div class="ui grid">
+			<div class="four wide column"></div>
+			<div class="eight wide column">
+				<h2 class="ui top attached header">Sign In</h2>
+				<f:form method="POST" servletRelativeAction="/user/login"
+					modelAttribute="credentials"
+					cssClass="ui error form segment attached">
 
-	<c:if test="${empty applicationUser }">
-		<a href="<c:url value="/user/register" />">Register</a><br>
+					<f:errors path="*" element="div" cssClass="ui error message" />
+					<div class="field">
+						<label>E-mail</label>
+						<div class="ui left labeled icon input">
+							<f:input path="email" name="email" />
+							<i class="mail icon"></i>
+							<div class="ui corner label">
+								<i class="icon asterisk"></i>
+							</div>
+						</div>
+					</div>
+					<div class="field">
+						<label>Password</label>
+						<div class="ui left labeled icon input">
+							<f:password path="password" name="password" />
+							<i class="lock icon"></i>
+							<div class="ui corner label">
+								<i class="icon asterisk"></i>
+							</div>
+						</div>
+					</div>
+					<input type="submit" value="Login" class="ui green submit button" />
+					<div class="ui right floated red button"
+						onclick='window.location.href="<c:url value="/user/register" />"'>Register</div>
+				</f:form>
+			</div>
+			<div class="four wide column"></div>
+		</div>
 	</c:if>
 
 	<c:if test="${not empty applicationUser }">
-		<c:forEach items="${notes }" var="note">
-			Name: <c:out value="${note.name }" />
-			Description: <c:out value="${note.description }" />
-			Priority: <c:out value="${note.priority.name }" />
-			<br>
-		</c:forEach>	
+		<%@include file="topMenu.jsp"%>
+
+		<div class="ui grid" style="padding-top: 40px;">
+			<div class="three wide column"></div>
+			<div class="three wide column">
+				<%@include file="leftMenu.jsp"%>
+			</div>
+			<div class="seven wide column">
+				<c:forEach items="${notes }" var="note">
+					<c:choose>
+						<c:when test="${note.priority.name eq 'normal' }">
+							<div class="ui top attached green primary segment">
+								<h3 style="float: left; margin-bottom: 0px;">
+									<c:out value="${note.name }"></c:out>
+								</h3>
+								<div class="ui label" style="float: right;">
+									<c:out value="${note.theme.name }"></c:out>
+								</div>
+							</div>
+						</c:when>
+						<c:otherwise>
+							<div class="ui top attached red inverted primary segment">
+								<h3 style="float: left; margin-bottom: 0px;">
+									<c:out value="${note.name }"></c:out>
+								</h3>
+								<div class="ui label" style="float: right;">
+									<c:out value="${note.theme.name }"></c:out>
+								</div>
+							</div>
+						</c:otherwise>
+					</c:choose>
+
+					<div class="ui attached secondary segment">
+						<c:out value="${note.description }"></c:out>
+					</div>
+					<div class="ui bottom attached right aligned segment">
+						<c:out value="${note.published }"></c:out>
+						by
+						<c:out value="${note.user.firstName }"></c:out>
+						<c:out value="${note.user.lastName }"></c:out>
+					</div>
+				</c:forEach>
+			</div>
+			<div class="three wide column"></div>
+		</div>
 	</c:if>
 
-	<c:if test="${not empty applicationUser }">
-		<f:form method="POST" servletRelativeAction="/note/add"
-			modelAttribute="note">
-			<f:errors path="*" />
-			<f:hidden path="user" value="${applicationUser.id }" />
-			Name: <f:input path="name" /><br>
-			Description: <f:textarea path="description" /><br>
-			Priority: <f:select path="priority"><br>
-						<f:options items="${priorities }" itemValue="id" itemLabel="name" />
-					</f:select>
-			<input type="submit" value="Create" />
-		</f:form>
-	</c:if>
+	<script type="text/javascript">
+		$('.ui.dropdown').dropdown();
+	</script>
 </body>
 </html>
