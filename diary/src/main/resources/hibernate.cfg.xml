@@ -17,5 +17,6 @@
 		<mapping class="by.paveldzunovich.diary.model.Note" />
 		<mapping class="by.paveldzunovich.diary.model.Priority" />
 		<mapping class="by.paveldzunovich.diary.model.Theme" />
+		<mapping class="by.paveldzunovich.diary.model.Subscription" />
 	</session-factory>
 </hibernate-configuration>

@@ -69,4 +69,8 @@ public class User extends Item {
 		this.confirmPassword = confirmPassword;
 	}
 
+	public String getFullName() {
+		return firstName + " " + lastName;
+	}
+
 }

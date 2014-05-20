@@ -15,5 +15,6 @@ public interface NoteService {
 
 	List<Note> getNotes(User user) throws DaoException;
 
+	void deleteNote(Note note) throws DaoException;
 
 }

@@ -16,4 +16,6 @@ public interface ThemeService {
 
 	List<Theme> searchThemes(String text) throws DaoException;
 
+	void delete(Theme theme) throws DaoException;
+
 }

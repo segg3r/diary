@@ -59,6 +59,13 @@
     </bean>
     <bean id="themeService" class="by.paveldzunovich.diary.services.impl.ThemeServiceImpl" />
     
+    <bean id="subscriptionDao" class="by.paveldzunovich.diary.dao.impl.ItemDaoImpl">
+        <constructor-arg>
+			<value>by.paveldzunovich.diary.model.Subscription</value>
+		</constructor-arg>
+    </bean>
+    <bean id="subscriptionService" class="by.paveldzunovich.diary.services.impl.SubscriptionServiceImpl" />
+    
     <!-- Controllers -->
     <bean id="mainPage" class="by.paveldzunovich.diary.web.controllers.MainPage" />
     

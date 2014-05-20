@@ -69,6 +69,27 @@
 				<%@include file="leftMenu.jsp"%>
 			</div>
 			<div class="seven wide column">
+				<c:if test="${not empty activeTheme }">
+					<div style="margin-bottom: 55px;">
+						<h2 class="ui left floated header">
+							<c:out value="${activeTheme.name }"></c:out>
+						</h2>
+						<c:choose>
+							<c:when test="${activeTheme.user eq applicationUser }">
+								<div class="ui right labeled icon floated small button"
+									onclick='window.location.href="<c:url value="/theme/delete/${activeTheme.id }" />"'>
+									<i class="remove icon"></i>Delete theme
+								</div>
+							</c:when>
+							<c:otherwise>
+								<div class="ui right labeled icon floated small button"
+									onclick='window.location.href="<c:url value="/theme/unsubscribe/${activeTheme.id }" />"'>
+									<i class="remove icon"></i>Unread
+								</div>
+							</c:otherwise>
+						</c:choose>
+					</div>
+				</c:if>
 				<c:forEach items="${notes }" var="note">
 					<c:choose>
 						<c:when test="${note.priority.name eq 'normal' }">

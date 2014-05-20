@@ -80,4 +80,12 @@ public class Users {
 		}
 	}
 
+	@RequestMapping(value = "/logout")
+	public ModelAndView logout(HttpServletRequest request) {
+		HttpSession session = request.getSession(true);
+		session.setAttribute(Attributes.APPLICATION_USER, null);
+
+		return mainPage.get(request);
+	}
+
 }

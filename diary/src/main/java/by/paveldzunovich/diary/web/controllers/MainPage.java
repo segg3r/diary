@@ -13,10 +13,12 @@ import org.springframework.web.servlet.ModelAndView;
 import by.paveldzunovich.diary.dao.exceptions.DaoException;
 import by.paveldzunovich.diary.model.Note;
 import by.paveldzunovich.diary.model.Priority;
+import by.paveldzunovich.diary.model.Subscription;
 import by.paveldzunovich.diary.model.Theme;
 import by.paveldzunovich.diary.model.User;
 import by.paveldzunovich.diary.services.ifaces.NoteService;
 import by.paveldzunovich.diary.services.ifaces.PriorityService;
+import by.paveldzunovich.diary.services.ifaces.SubscriptionService;
 import by.paveldzunovich.diary.services.ifaces.ThemeService;
 import by.paveldzunovich.diary.web.Attributes;
 import by.paveldzunovich.diary.web.Pages;
@@ -31,6 +33,8 @@ public class MainPage {
 	private PriorityService priorityService;
 	@Autowired
 	private ThemeService themeService;
+	@Autowired
+	private SubscriptionService subscriptionService;
 
 	@RequestMapping(value = "/")
 	public ModelAndView get(HttpServletRequest request) {
@@ -62,6 +66,12 @@ public class MainPage {
 
 				List<Priority> priorities = priorityService.list();
 				view.addObject(Attributes.PRIORITIES, priorities);
+
+				List<Subscription> subscriptions = subscriptionService
+						.getUserSubscriptions(user);
+				view.addObject(Attributes.SUBSCRIPTIONS, subscriptions);
+				
+				view.addObject(Attributes.ACTIVE_THEME, theme);
 			} else {
 				view.addObject(Attributes.CREDENTIALS, new Credentials());
 			}
