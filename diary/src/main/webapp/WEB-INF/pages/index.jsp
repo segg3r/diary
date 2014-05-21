@@ -2,6 +2,7 @@
 	pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="f"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -117,11 +118,28 @@
 					<div class="ui attached secondary segment">
 						<c:out value="${note.description }"></c:out>
 					</div>
-					<div class="ui bottom attached right aligned segment">
-						<c:out value="${note.published }"></c:out>
-						by
-						<c:out value="${note.user.firstName }"></c:out>
-						<c:out value="${note.user.lastName }"></c:out>
+					<div class="ui bottom attached segment">
+						<c:set var="liked" value="${false }" />
+						<c:forEach items="${note.likes }" var="like">
+							<c:if test="${like.user eq applicationUser }">
+								<c:set var="liked" value="${true }" />
+							</c:if>
+						</c:forEach>
+						<c:if test="${liked eq false }">
+							<div class="ui tiny labeled icon button"
+								onclick='window.location.href="<c:url value="/note/like/${note.id}" />"'>
+								<i class="heart icon"></i>${fn:length(note.likes) }</div>
+						</c:if>
+						<c:if test="${liked eq true }">
+							<div class="ui red tiny labeled icon button"
+								onclick='window.location.href="<c:url value="/note/like/${note.id}" />"'>
+								<i class="heart icon"></i>${fn:length(note.likes) }</div>
+						</c:if>
+						<span style="float: right;"><c:out
+								value="${note.published }"></c:out> by <c:out
+								value="${note.user.firstName }"></c:out> <c:out
+								value="${note.user.lastName }"></c:out></span>
+
 					</div>
 				</c:forEach>
 			</div>

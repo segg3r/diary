@@ -1,6 +1,9 @@
 package by.paveldzunovich.diary.dao.impl;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
@@ -31,8 +34,15 @@ public class ItemDaoImpl<T extends Item> implements ItemDao<T> {
 				criteria.add(criterion);
 			}
 
-			List<T> result = criteria.list();
+			List<T> list = criteria.list();
 			session.close();
+
+			Set<T> uniqueSet = new TreeSet<T>();
+			for (T item : list) {
+				uniqueSet.add(item);
+			}
+			List<T> result = new ArrayList<T>();
+			result.addAll(uniqueSet);
 			return result;
 		} catch (HibernateException e) {
 			throw new DaoException(e);

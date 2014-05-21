@@ -6,7 +6,7 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
-public abstract class Item {
+public abstract class Item implements Comparable<Item> {
 
 	public static final String ID_COLUMN = "id";
 
@@ -46,6 +46,10 @@ public abstract class Item {
 
 		Item item = (Item) obj;
 		return id == item.id;
+	}
+
+	public int compareTo(Item item) {
+		return id - item.id;
 	}
 
 }

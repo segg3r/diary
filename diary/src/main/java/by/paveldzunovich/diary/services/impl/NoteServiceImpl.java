@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import by.paveldzunovich.diary.dao.exceptions.DaoException;
 import by.paveldzunovich.diary.dao.ifaces.ItemDao;
+import by.paveldzunovich.diary.model.Item;
 import by.paveldzunovich.diary.model.Note;
 import by.paveldzunovich.diary.model.Subscription;
 import by.paveldzunovich.diary.model.Theme;
@@ -61,6 +62,10 @@ public class NoteServiceImpl implements NoteService {
 
 	public void deleteNote(Note note) throws DaoException {
 		noteDao.delete(note);
+	}
+
+	public Note get(int id) throws DaoException {
+		return noteDao.get(Restrictions.eq(Item.ID_COLUMN, id));
 	}
 
 }

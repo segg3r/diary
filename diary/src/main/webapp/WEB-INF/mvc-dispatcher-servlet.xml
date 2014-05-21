@@ -66,6 +66,13 @@
     </bean>
     <bean id="subscriptionService" class="by.paveldzunovich.diary.services.impl.SubscriptionServiceImpl" />
     
+    <bean id="likeDao" class="by.paveldzunovich.diary.dao.impl.ItemDaoImpl">
+        <constructor-arg>
+			<value>by.paveldzunovich.diary.model.Like</value>
+		</constructor-arg>
+    </bean>
+    <bean id="likeService" class="by.paveldzunovich.diary.services.impl.LikeServiceImpl" />
+    
     <!-- Controllers -->
     <bean id="mainPage" class="by.paveldzunovich.diary.web.controllers.MainPage" />
     

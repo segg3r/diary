@@ -17,4 +17,6 @@ public interface NoteService {
 
 	void deleteNote(Note note) throws DaoException;
 
+	Note get(int id) throws DaoException;
+
 }

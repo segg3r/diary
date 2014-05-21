@@ -1,10 +1,13 @@
 package by.paveldzunovich.diary.model;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -33,6 +36,8 @@ public class Note extends Item {
 	@Column(name = PUBLISHED_COLUMN, columnDefinition = "DATETIME")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date published;
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "note")
+	private List<Like> likes;
 
 	public Note() {
 		super();
@@ -80,6 +85,14 @@ public class Note extends Item {
 
 	public Priority getPriority() {
 		return priority;
+	}
+
+	public List<Like> getLikes() {
+		return likes;
+	}
+
+	public void setLikes(List<Like> likes) {
+		this.likes = likes;
 	}
 
 	public void setPriority(Priority priority) {
