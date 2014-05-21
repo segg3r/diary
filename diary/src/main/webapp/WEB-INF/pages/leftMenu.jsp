@@ -19,7 +19,8 @@
 	</c:forEach>
 	<div class="item" style="position: relative;">
 		<f:form modelAttribute="newTheme" method="POST"
-			servletRelativeAction="/theme/add" cssClass="ui form">
+			servletRelativeAction="/theme/add" cssClass="ui error form">
+			<f:errors path="*" element="div" cssClass="ui error message" />
 			<f:hidden path="user" value="${newTheme.user.id }" />
 			<div class="fields">
 				<div class="twelve wide field" style="margin-bottom: 0px;">

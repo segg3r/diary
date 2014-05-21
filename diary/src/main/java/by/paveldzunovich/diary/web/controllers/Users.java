@@ -26,7 +26,7 @@ public class Users {
 
 	@Autowired
 	private MainPage mainPage;
-	
+
 	@Autowired
 	private UserService userService;
 
@@ -40,20 +40,28 @@ public class Users {
 	public ModelAndView registerUser(HttpServletRequest request,
 			@ModelAttribute(Attributes.USER) @Valid User user,
 			BindingResult bindingResult) {
-		try {
-			userService.add(user);
+		if (user.getPassword() != null
+				&& !user.getPassword().equals(user.getConfirmPassword())) {
+			bindingResult.rejectValue("password", "password.notequal",
+					"Wrong password confirmation");
+		}
+		if (!bindingResult.hasErrors()) {
+			try {
+				userService.add(user);
 
-			HttpSession session = request.getSession(true);
-			session.setAttribute(Attributes.APPLICATION_USER, user);
-
-			return mainPage.get(request);
-		} catch (DaoException e) {
-			bindingResult.rejectValue("email", "email.wrong", e.getMessage());
-
-			ModelAndView view = mainPage.get(request);
+				HttpSession session = request.getSession(true);
+				session.setAttribute(Attributes.APPLICATION_USER, user);
+			} catch (DaoException e) {
+				bindingResult.rejectValue("email", "email.wrong",
+						e.getMessage());
+			}
+		}
+		if (bindingResult.hasErrors()) {
+			ModelAndView view = new ModelAndView(Pages.REGISTER);
 			view.addAllObjects(bindingResult.getModel());
-
 			return view;
+		} else {
+			return mainPage.get(request);
 		}
 	}
 

@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -44,17 +45,22 @@ public class Themes {
 	}
 
 	@RequestMapping(value = "/add")
-	public ModelAndView addTheme(HttpServletRequest request, @ModelAttribute("newTheme") Theme theme,
+	public ModelAndView addTheme(HttpServletRequest request,
+			@ModelAttribute("newTheme") @Valid Theme theme,
 			BindingResult bindingResult) {
-		try {
-			themeService.add(theme);
-		} catch (DaoException e) {
-			bindingResult.rejectValue("name", "name.empty",
-					"Error adding theme.");
+		if (!bindingResult.hasErrors()) {
+			try {
+				themeService.add(theme);
+			} catch (DaoException e) {
+				bindingResult.rejectValue("name", "name.empty",
+						"Error adding theme.");
+			}
 		}
-		
+
 		ModelAndView view = mainPage.get(request);
-		view.addAllObjects(bindingResult.getModel());
+		if (bindingResult.hasErrors()) {
+			view.addAllObjects(bindingResult.getModel());
+		}
 		return view;
 	}
 
@@ -73,7 +79,9 @@ public class Themes {
 	@RequestMapping(value = "/search/{text}")
 	public ModelAndView searchThemes(HttpServletRequest request,
 			@PathVariable(value = "text") String text) throws DaoException {
-		List<Theme> themes = themeService.searchThemes(text);
+		HttpSession session = request.getSession(true);
+		User user = (User) session.getAttribute(Attributes.APPLICATION_USER);
+		List<Theme> themes = themeService.searchThemes(user, text);
 
 		ModelAndView view = mainPage.get(request);
 		view.setViewName("theme/search/result");
@@ -93,7 +101,7 @@ public class Themes {
 
 		return mainPage.get(request, theme);
 	}
-	
+
 	@RequestMapping(value = "/unsubscribe/{id}")
 	public ModelAndView unsubscribe(HttpServletRequest request,
 			@PathVariable(value = "id") int themeId) throws DaoException {

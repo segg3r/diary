@@ -1,3 +1,1 @@
-- registration/authorization
-- adding notes (name, description, priority)
-- adding actions by date
+- form handling

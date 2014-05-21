@@ -14,7 +14,7 @@ public interface ThemeService {
 
 	Theme getById(int id) throws DaoException;
 
-	List<Theme> searchThemes(String text) throws DaoException;
+	List<Theme> searchThemes(User user, String text) throws DaoException;
 
 	void delete(Theme theme) throws DaoException;
 
