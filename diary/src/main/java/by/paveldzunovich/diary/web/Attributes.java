@@ -14,5 +14,6 @@ public class Attributes {
 	public static final String THEMES_FOUND = "themesFound";
 	public static final String SUBSCRIPTIONS = "subscriptions";
 	public static final String ACTIVE_THEME = "activeTheme";
+	public static final String THEMES_FOUND_LIKES = "themesFoundLikes";
 
 }

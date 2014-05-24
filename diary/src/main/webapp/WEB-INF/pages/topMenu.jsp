@@ -1,4 +1,7 @@
-<div class="ui fixed green inverted menu">
+<div class="ui green inverted menu">
+	<div class="header item">
+		<a href='<c:url value="/" />'>Main page</a>
+	</div>
 	<div class="right menu">
 		<div class="item">
 			Hi, <b><c:out value="${applicationUser.firstName }"></c:out> <c:out

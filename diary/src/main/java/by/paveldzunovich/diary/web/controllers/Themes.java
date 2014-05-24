@@ -1,6 +1,8 @@
 package by.paveldzunovich.diary.web.controllers;
 
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -20,6 +22,7 @@ import by.paveldzunovich.diary.dao.exceptions.DaoException;
 import by.paveldzunovich.diary.model.Subscription;
 import by.paveldzunovich.diary.model.Theme;
 import by.paveldzunovich.diary.model.User;
+import by.paveldzunovich.diary.services.ifaces.LikeService;
 import by.paveldzunovich.diary.services.ifaces.SubscriptionService;
 import by.paveldzunovich.diary.services.ifaces.ThemeService;
 import by.paveldzunovich.diary.web.Attributes;
@@ -33,6 +36,8 @@ public class Themes {
 	private MainPage mainPage;
 	@Autowired
 	private UserBinder userBinder;
+	@Autowired
+	private LikeService likeService;
 	@Autowired
 	private ThemeService themeService;
 	@Autowired
@@ -86,7 +91,17 @@ public class Themes {
 		ModelAndView view = mainPage.get(request);
 		view.setViewName("theme/search/result");
 		view.addObject(Attributes.THEMES_FOUND, themes);
+		view.addObject(Attributes.THEMES_FOUND_LIKES, getThemesLikes(themes));
 		return view;
+	}
+
+	private Map<Theme, Integer> getThemesLikes(List<Theme> themes)
+			throws DaoException {
+		Map<Theme, Integer> result = new TreeMap<Theme, Integer>();
+		for (Theme theme : themes) {
+			result.put(theme, likeService.getThemeLikeNumber(theme));
+		}
+		return result;
 	}
 
 	@RequestMapping(value = "/subscribe/{id}")

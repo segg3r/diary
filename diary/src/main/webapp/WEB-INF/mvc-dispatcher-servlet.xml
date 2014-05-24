@@ -84,4 +84,5 @@
     <!-- Comparators -->
     <bean id="priorityComparator" class="by.paveldzunovich.diary.model.comparators.PriorityComparator" />
     <bean id="notesComparator" class="by.paveldzunovich.diary.model.comparators.NotesComparator" />
+    <bean id="themesPopularityComparator" class="by.paveldzunovich.diary.model.comparators.ThemesPopularityComparator" />
 </beans>

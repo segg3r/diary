@@ -22,9 +22,13 @@
 </head>
 <body style="margin: 0px;">
 	<c:if test="${not empty applicationUser }">
-		<%@include file="../../topMenu.jsp"%>
+		<div class="ui grid">
+			<div class="three wide column"></div>
+			<div class="ten wide column"><%@include file="../../topMenu.jsp"%></div>
+			<div class="three wide column"></div>
+		</div>
 
-		<div class="ui grid" style="padding-top: 40px;">
+		<div class="ui grid">
 			<div class="three wide column"></div>
 			<div class="three wide column">
 				<%@include file="../../leftMenu.jsp"%>
@@ -36,13 +40,15 @@
 						<tr>
 							<th class="six wide">Name</th>
 							<th class="six wide">Owner</th>
-							<th class="four wide"></th>
+							<th class="two wide"></th>
+							<th class="two wide"></th>
 						</tr>
 					</thead>
 					<c:forEach items="${themesFound }" var="theme">
 						<tr>
-							<td>${theme.name }</td>
+							<td><a href='<c:url value="/theme/${theme.id }"></c:url>'> ${theme.name }</a></td>
 							<td>${theme.user.fullName }</td>
+							<td><i class="red heart icon"></i> ${themesFoundLikes[theme] }</td>
 							<td><c:if test="${not (theme.user eq applicationUser) }">
 									<div class="ui tiny labeled icon button"
 										onclick='window.location.href="<c:url value="/theme/subscribe/${theme.id }" />"'>

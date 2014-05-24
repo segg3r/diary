@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="f"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -62,9 +63,12 @@
 	</c:if>
 
 	<c:if test="${not empty applicationUser }">
-		<%@include file="topMenu.jsp"%>
-
-		<div class="ui grid" style="padding-top: 40px;">
+		<div class="ui grid">
+			<div class="three wide column"></div>
+			<div class="ten wide column"><%@include file="topMenu.jsp"%></div>
+			<div class="three wide column"></div>
+		</div>
+		<div class="ui grid">
 			<div class="three wide column"></div>
 			<div class="three wide column">
 				<%@include file="leftMenu.jsp"%>
@@ -83,10 +87,24 @@
 								</div>
 							</c:when>
 							<c:otherwise>
-								<div class="ui right labeled icon floated small button"
-									onclick='window.location.href="<c:url value="/theme/unsubscribe/${activeTheme.id }" />"'>
-									<i class="remove icon"></i>Unread
-								</div>
+								<c:set var="subscribed" value="${false }" />
+								<c:forEach items="${subscriptions }" var="subscription">
+									<c:if test="${subscription.theme eq activeTheme }">
+										<c:set var="subscribed" value="${true }" />
+									</c:if>
+								</c:forEach>
+								<c:if test="${subscribed eq true }">
+									<div class="ui right labeled icon floated small button"
+										onclick='window.location.href="<c:url value="/theme/unsubscribe/${activeTheme.id }" />"'>
+										<i class="remove icon"></i>Unsubscribe
+									</div>
+								</c:if>
+								<c:if test="${subscribed eq false }">
+									<div class="ui right labeled icon floated small button"
+										onclick='window.location.href="<c:url value="/theme/subscribe/${activeTheme.id }" />"'>
+										<i class="add icon"></i>Subscribe
+									</div>
+								</c:if>
 							</c:otherwise>
 						</c:choose>
 					</div>
@@ -135,9 +153,9 @@
 								onclick='window.location.href="<c:url value="/note/like/${note.id}" />"'>
 								<i class="heart icon"></i>${fn:length(note.likes) }</div>
 						</c:if>
-						<span style="float: right;"><c:out
-								value="${note.published }"></c:out> by <c:out
-								value="${note.user.firstName }"></c:out> <c:out
+						<span style="float: right;"><fmt:formatDate type="both"
+								dateStyle="long" timeStyle="long" value="${note.published }" />
+							by <c:out value="${note.user.firstName }"></c:out> <c:out
 								value="${note.user.lastName }"></c:out></span>
 
 					</div>

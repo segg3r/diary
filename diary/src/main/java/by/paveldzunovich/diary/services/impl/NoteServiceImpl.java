@@ -56,6 +56,12 @@ public class NoteServiceImpl implements NoteService {
 			result.addAll(getThemeNotes(theme));
 		}
 
+		List<Subscription> subscriptions = subscriptionService
+				.getUserSubscriptions(user);
+		for (Subscription subscription : subscriptions) {
+			result.addAll(getThemeNotes(subscription.getTheme()));
+		}
+
 		Collections.sort(result, notesComparator);
 		return result;
 	}
