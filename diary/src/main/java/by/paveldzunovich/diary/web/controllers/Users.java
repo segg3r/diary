@@ -1,5 +1,8 @@
 package by.paveldzunovich.diary.web.controllers;
 
+import java.util.Collections;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -9,12 +12,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import by.paveldzunovich.diary.dao.exceptions.DaoException;
+import by.paveldzunovich.diary.model.Theme;
 import by.paveldzunovich.diary.model.User;
+import by.paveldzunovich.diary.model.comparators.ThemesPopularityComparator;
+import by.paveldzunovich.diary.services.ifaces.LikeService;
+import by.paveldzunovich.diary.services.ifaces.ThemeService;
 import by.paveldzunovich.diary.services.ifaces.UserService;
 import by.paveldzunovich.diary.web.Attributes;
 import by.paveldzunovich.diary.web.Pages;
@@ -26,9 +34,14 @@ public class Users {
 
 	@Autowired
 	private MainPage mainPage;
-
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private ThemeService themeService;
+	@Autowired
+	private ThemesPopularityComparator themesPopularityComparator;
+	@Autowired
+	private LikeService likeService;
 
 	@RequestMapping(value = "/register")
 	public String toRegister(ModelMap model) {
@@ -96,4 +109,19 @@ public class Users {
 		return mainPage.get(request);
 	}
 
+	@RequestMapping(value = "/{id}")
+	public ModelAndView getUserData(HttpServletRequest request,
+			@PathVariable("id") int userId) throws DaoException {
+		User user = userService.get(userId);
+		List<Theme> userThemes = themeService.getUserThemes(user);
+		Collections.sort(userThemes, themesPopularityComparator);
+
+		ModelAndView view = mainPage.get(request);
+		view.addObject(Attributes.USER, user);
+		view.addObject(Attributes.USER_THEMES, userThemes);
+		view.addObject(Attributes.THEMES_FOUND_LIKES,
+				likeService.getThemesLikes(userThemes));
+		view.setViewName("user/info");
+		return view;
+	}
 }

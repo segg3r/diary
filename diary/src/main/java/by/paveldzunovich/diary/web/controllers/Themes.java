@@ -1,8 +1,6 @@
 package by.paveldzunovich.diary.web.controllers;
 
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -91,17 +89,9 @@ public class Themes {
 		ModelAndView view = mainPage.get(request);
 		view.setViewName("theme/search/result");
 		view.addObject(Attributes.THEMES_FOUND, themes);
-		view.addObject(Attributes.THEMES_FOUND_LIKES, getThemesLikes(themes));
+		view.addObject(Attributes.THEMES_FOUND_LIKES,
+				likeService.getThemesLikes(themes));
 		return view;
-	}
-
-	private Map<Theme, Integer> getThemesLikes(List<Theme> themes)
-			throws DaoException {
-		Map<Theme, Integer> result = new TreeMap<Theme, Integer>();
-		for (Theme theme : themes) {
-			result.put(theme, likeService.getThemeLikeNumber(theme));
-		}
-		return result;
 	}
 
 	@RequestMapping(value = "/subscribe/{id}")

@@ -1,5 +1,8 @@
 package by.paveldzunovich.diary.services.ifaces;
 
+import java.util.List;
+import java.util.Map;
+
 import by.paveldzunovich.diary.dao.exceptions.DaoException;
 import by.paveldzunovich.diary.model.Like;
 import by.paveldzunovich.diary.model.Note;
@@ -15,5 +18,7 @@ public interface LikeService {
 	Like get(User user, Note note) throws DaoException;
 
 	int getThemeLikeNumber(Theme theme) throws DaoException;
+
+	Map<Theme, Integer> getThemesLikes(List<Theme> themes) throws DaoException;
 
 }

@@ -1,6 +1,8 @@
 package by.paveldzunovich.diary.services.impl;
 
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +15,6 @@ import by.paveldzunovich.diary.model.Theme;
 import by.paveldzunovich.diary.model.User;
 import by.paveldzunovich.diary.services.ifaces.LikeService;
 import by.paveldzunovich.diary.services.ifaces.NoteService;
-
 
 public class LikeServiceImpl implements LikeService {
 
@@ -43,6 +44,15 @@ public class LikeServiceImpl implements LikeService {
 			result += note.getLikes().size();
 		}
 
+		return result;
+	}
+
+	public Map<Theme, Integer> getThemesLikes(List<Theme> themes)
+			throws DaoException {
+		Map<Theme, Integer> result = new TreeMap<Theme, Integer>();
+		for (Theme theme : themes) {
+			result.put(theme, getThemeLikeNumber(theme));
+		}
 		return result;
 	}
 

@@ -24,40 +24,47 @@
 	<c:if test="${not empty applicationUser }">
 		<div class="ui grid">
 			<div class="two wide column"></div>
-			<div class="twelve wide column"><%@include file="../../topMenu.jsp"%></div>
+			<div class="twelve wide column"><%@include
+					file="../topMenu.jsp"%></div>
 			<div class="two wide column"></div>
 		</div>
 
 		<div class="ui grid">
 			<div class="two wide column"></div>
 			<div class="four wide column">
-				<%@include file="../../leftMenu.jsp"%>
+				<%@include file="../leftMenu.jsp"%>
 			</div>
 			<div class="eight wide column">
-				<h2 class="ui header">Themes found</h2>
-				<table class="ui table segment">
-					<thead>
-						<tr>
-							<th class="six wide">Name</th>
-							<th class="six wide">Owner</th>
-							<th class="two wide"></th>
-							<th class="two wide"></th>
-						</tr>
-					</thead>
-					<c:forEach items="${themesFound }" var="theme">
-						<tr>
-							<td><a href='<c:url value="/theme/${theme.id }"></c:url>'> ${theme.name }</a></td>
-							<td>${theme.user.fullName }</td>
-							<td><i class="red heart icon"></i> ${themesFoundLikes[theme] }</td>
-							<td><c:if test="${not (theme.user eq applicationUser) }">
-									<div class="ui tiny labeled icon button"
-										onclick='window.location.href="<c:url value="/theme/subscribe/${theme.id }" />"'>
-										<i class="add icon"></i>Subscribe
-									</div>
-								</c:if></td>
-						</tr>
-					</c:forEach>
-				</table>
+				<div class="ui top attached secondary segment">
+					<h2 class="ui header">${user.fullName }</h2>
+				</div>
+				<div class="ui primary attached segment">
+					<b>Email: </b> ${user.email }
+					<h2 class="ui header">Themes found</h2>
+					<table class="ui table segment">
+						<thead>
+							<tr>
+								<th class="six wide">Name</th>
+								<th class="two wide"></th>
+								<th class="two wide"></th>
+							</tr>
+						</thead>
+						<c:forEach items="${userThemes }" var="theme">
+							<tr>
+								<td><a href='<c:url value="/theme/${theme.id }"></c:url>'>
+										${theme.name }</a></td>
+								<td><i class="red heart icon"></i>
+									${themesFoundLikes[theme] }</td>
+								<td><c:if test="${not (theme.user eq applicationUser) }">
+										<div class="ui tiny labeled icon button"
+											onclick='window.location.href="<c:url value="/theme/subscribe/${theme.id }" />"'>
+											<i class="add icon"></i>Subscribe
+										</div>
+									</c:if></td>
+							</tr>
+						</c:forEach>
+					</table>
+				</div>
 			</div>
 			<div class="two wide column"></div>
 		</div>
