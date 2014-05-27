@@ -101,8 +101,10 @@ public class Themes {
 		User user = (User) session.getAttribute(Attributes.APPLICATION_USER);
 		Theme theme = themeService.getById(themeId);
 
-		Subscription subscription = new Subscription(user, theme);
-		subscriptionService.addSubscription(subscription);
+		if (subscriptionService.get(user, theme) == null) {
+			Subscription subscription = new Subscription(user, theme);
+			subscriptionService.addSubscription(subscription);
+		}
 
 		return mainPage.get(request, theme);
 	}

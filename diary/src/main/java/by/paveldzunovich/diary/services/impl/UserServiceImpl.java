@@ -1,5 +1,8 @@
 package by.paveldzunovich.diary.services.impl;
 
+import java.util.List;
+
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -43,6 +46,15 @@ public class UserServiceImpl implements UserService {
 
 	public User get(int id) throws DaoException {
 		return userDao.get(Restrictions.eq(Item.ID_COLUMN, id));
+	}
+
+	public List<User> search(String text) throws DaoException {
+		List<User> result = userDao.list(Restrictions.or(
+				Restrictions.like(User.FIRST_NAME_COLUMN, text,
+						MatchMode.ANYWHERE).ignoreCase(),
+				Restrictions.like(User.LAST_NAME_COLUMN, text,
+						MatchMode.ANYWHERE).ignoreCase()));
+		return result;
 	}
 
 }

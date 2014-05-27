@@ -124,4 +124,15 @@ public class Users {
 		view.setViewName("user/info");
 		return view;
 	}
+
+	@RequestMapping(value = "/search/{text}")
+	public ModelAndView getUserSearchResult(HttpServletRequest request,
+			@PathVariable("text") String text) throws DaoException {
+		List<User> users = userService.search(text);
+
+		ModelAndView view = mainPage.get(request);
+		view.addObject(Attributes.USERS_FOUND, users);
+		view.setViewName("user/search/result");
+		return view;
+	}
 }
