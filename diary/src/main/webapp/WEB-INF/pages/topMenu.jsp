@@ -4,8 +4,7 @@
 	</div>
 	<div class="right menu">
 		<div class="item">
-			Hi, <b><c:out value="${applicationUser.firstName }"></c:out> <c:out
-					value="${applicationUser.lastName }"></c:out></b>
+			Hi, <b><a href='<c:url value="/user/${applicationUser.id }"/>'>${applicationUser.fullName }</a></b>
 		</div>
 		<div class="item">
 			<a href='<c:url value="/user/logout" />'>Logout</a>
